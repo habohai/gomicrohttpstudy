@@ -7,12 +7,19 @@ import "models.proto";
 message ProdsRequest {
     // @inject_tag: json:"size",form:"size"
     int32 size = 1;
+    // @inject_tag: uri:"pid"
+    int32 prod_id = 2;
 }
 
 message ProdListResponse {
     repeated ProdModel data = 1;
 }
 
+message ProdDetailResponse {
+    ProdModel data = 1;
+}
+
 service  ProdService {
     rpc GetProdsList(ProdsRequest) returns(ProdListResponse);
+    rpc GetProdsDetail(ProdsRequest) returns(ProdDetailResponse);
 }

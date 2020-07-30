@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gomicrohttpstudy/services"
 	"gomicrohttpstudy/weblib"
+	"gomicrohttpstudy/wrapper"
 
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/client"
@@ -36,6 +37,7 @@ func main() {
 	myService := micro.NewService(
 		micro.Name("prodsservic.client"),
 		micro.WrapClient(NewLogWrapper),
+		micro.WrapClient(wrapper.NewProdsWrapper),
 	)
 
 	prodService := services.NewProdService("prodservice", myService.Client())
