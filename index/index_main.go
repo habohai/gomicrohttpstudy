@@ -1,0 +1,26 @@
+package main
+
+import (
+	"github.com/gin-gonic/gin"
+
+	"github.com/micro/go-micro/web"
+)
+
+func main() {
+	ginRouter := gin.Default()
+
+	ginRouter.Handle("GET", "/", func(context *gin.Context) {
+		data := make([]interface{}, 0)
+		context.JSON(200, gin.H{
+			"data": data,
+		})
+	})
+
+	server := web.NewService(
+		web.Name("prodservice"),
+		web.Address(":9060"),
+		web.Handler(ginRouter),
+	)
+
+	server.Run()
+}
