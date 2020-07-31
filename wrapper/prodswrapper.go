@@ -42,7 +42,10 @@ func (l *ProdsWrapper) Call(ctx context.Context, req client.Request, rsp interfa
 	cmdName := req.Service() + "." + req.Endpoint()
 
 	configA := hystrix.CommandConfig{
-		Timeout: 1000,
+		Timeout:                3000,
+		RequestVolumeThreshold: 2,
+		ErrorPercentThreshold:  50,
+		SleepWindow:            5000,
 	}
 
 	hystrix.ConfigureCommand(cmdName, configA)
