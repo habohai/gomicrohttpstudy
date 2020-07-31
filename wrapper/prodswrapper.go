@@ -13,6 +13,17 @@ func newProd(pid int32, pname string) *services.ProdModel {
 	return &services.ProdModel{ProdID: pid, ProdName: pname}
 }
 
+// 通用商品降级方法
+func defaultData(rsp interface{}) {
+	switch t := rsp.(type) {
+	case *services.ProdListResponse:
+		defaultProds(rsp)
+	case *services.ProdDetailResponse:
+		t.Data = newProd(10, "降级商品")
+	}
+}
+
+// 商品列表降级方法
 func defaultProds(rsp interface{}) {
 	models := make([]*services.ProdModel, 0)
 	var i int32
@@ -42,7 +53,7 @@ func (l *ProdsWrapper) Call(ctx context.Context, req client.Request, rsp interfa
 			return l.Client.Call(ctx, req, rsp)
 		},
 		func(err error) error {
-			defaultProds(rsp)
+			defaultData(rsp)
 			return nil
 		},
 	)
